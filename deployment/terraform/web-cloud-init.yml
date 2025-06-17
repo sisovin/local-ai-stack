@@ -1,0 +1,86 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+
+packages:
+  - docker.io
+  - docker-compose
+  - nginx
+  - caddy
+  - ufw
+  - htop
+  - curl
+  - nodejs
+  - npm
+
+users:
+  - name: deploy
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAA... # Add your SSH key here
+
+write_files:
+  - path: /etc/caddy/Caddyfile
+    content: |
+      ${domain_name} {
+        reverse_proxy /api/* ${ai_server_ip}:8080
+        reverse_proxy /search/* ${ai_server_ip}:8080
+        reverse_proxy /* localhost:3000
+        
+        tls {
+          protocols tls1.2 tls1.3
+        }
+        
+        header {
+          # Security headers
+          Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+          X-Content-Type-Options "nosniff"
+          X-Frame-Options "DENY"
+          X-XSS-Protection "1; mode=block"
+          Referrer-Policy "strict-origin-when-cross-origin"
+        }
+      }
+
+      www.${domain_name} {
+        redir https://${domain_name}{uri} permanent
+      }
+
+  - path: /home/deploy/docker-compose.yml
+    content: |
+      version: '3.8'
+      services:
+        web:
+          image: node:18-alpine
+          container_name: local-ai-web
+          working_dir: /app
+          ports:
+            - "3000:3000"
+          volumes:
+            - ./apps/web:/app
+            - /app/node_modules
+          environment:
+            - NODE_ENV=production
+            - NEXT_PUBLIC_SUPABASE_URL=${supabase_url}
+            - NEXT_PUBLIC_SUPABASE_ANON_KEY=${supabase_anon_key}
+            - AI_SEARCH_API_URL=http://${ai_server_ip}:8080
+          command: sh -c "npm install && npm run build && npm start"
+          restart: unless-stopped
+          healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+
+runcmd:
+  - systemctl enable docker
+  - systemctl start docker
+  - systemctl enable caddy
+  - systemctl start caddy
+  - usermod -aG docker deploy
+  - ufw allow 22
+  - ufw allow 80
+  - ufw allow 443
+  - ufw --force enable
+  - cd /home/deploy && git clone https://github.com/your-username/local-ai-stack.git .
+  - cd /home/deploy && docker-compose up -d

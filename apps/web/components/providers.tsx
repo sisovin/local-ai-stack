@@ -4,15 +4,22 @@ import * as React from "react"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme="system"
-      enableSystem
+      defaultTheme="dark"
+      enableSystem={false}
       disableTransitionOnChange
-      enableColorScheme
+      enableColorScheme={false}
+      storageKey="local-ai-theme"
     >
-      {children}
+      {mounted ? children : <div className="invisible">{children}</div>}
     </NextThemesProvider>
   )
 }

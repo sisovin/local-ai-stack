@@ -1,0 +1,114 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+
+packages:
+  - docker.io
+  - docker-compose
+  - nginx
+  - ufw
+  - htop
+  - nvtop
+  - nvidia-utils-535
+  - nvidia-docker2
+
+users:
+  - name: deploy
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAA... # Add your SSH key here
+
+write_files:
+  - path: /etc/docker/daemon.json
+    content: |
+      {
+        "default-runtime": "nvidia",
+        "runtimes": {
+          "nvidia": {
+            "path": "nvidia-container-runtime",
+            "runtimeArgs": []
+          }
+        }
+      }
+  - path: /home/deploy/docker-compose.yml
+    content: |
+      version: '3.8'
+      services:
+        ollama:
+          image: ollama/ollama:latest
+          container_name: ollama
+          ports:
+            - "11434:11434"
+          volumes:
+            - ollama_data:/root/.ollama
+          environment:
+            - OLLAMA_HOST=0.0.0.0:11434
+            - OLLAMA_ORIGINS=*
+          deploy:
+            resources:
+              reservations:
+                devices:
+                  - driver: nvidia
+                    count: all
+                    capabilities: [gpu]
+          restart: unless-stopped
+          healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 40s
+
+        ai-search-agent:
+          build: ./services/ai-search-agent
+          container_name: ai-search-agent
+          ports:
+            - "8080:8080"
+          environment:
+            - OLLAMA_BASE_URL=http://ollama:11434
+            - SEARXNG_URL=http://searxng:8080
+            - REDIS_URL=redis://redis:6379
+          depends_on:
+            - ollama
+            - redis
+            - searxng
+          restart: unless-stopped
+
+        redis:
+          image: redis:7-alpine
+          container_name: redis
+          ports:
+            - "6379:6379"
+          volumes:
+            - redis_data:/data
+          restart: unless-stopped
+
+        searxng:
+          image: searxng/searxng:latest
+          container_name: searxng
+          ports:
+            - "8081:8080"
+          volumes:
+            - ./searxng_settings.yml:/etc/searxng/settings.yml:ro
+          environment:
+            - SEARXNG_SECRET=your-secret-key-here
+          restart: unless-stopped
+
+      volumes:
+        ollama_data:
+        redis_data:
+
+runcmd:
+  - systemctl enable docker
+  - systemctl start docker
+  - usermod -aG docker deploy
+  - systemctl restart docker
+  - ufw allow 22
+  - ufw allow 11434
+  - ufw allow 8080
+  - ufw --force enable
+  - cd /home/deploy && docker-compose pull
+  - cd /home/deploy && docker-compose up -d
+  - docker exec ollama ollama pull deepseek-r1:7b-q4
+  - docker exec ollama ollama pull qwen2.5:7b-q4

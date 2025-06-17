@@ -1,0 +1,160 @@
+# SearXNG Configuration for Local AI Stack
+use_default_settings: true
+
+general:
+  debug: false
+  instance_name: "Local AI Stack Search"
+  contact_url: false
+  enable_metrics: false
+
+search:
+  safe_search: 1
+  autocomplete: ""
+  autocomplete_min: 4
+  default_lang: "en"
+  ban_time_on_fail: 5
+  max_ban_time_on_fail: 120
+  formats:
+    - html
+    - json
+
+server:
+  port: 8080
+  bind_address: "0.0.0.0"
+  secret_key: "change-this-secret-key-in-production"
+  base_url: false
+  image_proxy: false
+  http_protocol_version: "1.0"
+  method: "POST"
+  default_http_headers:
+    X-Content-Type-Options: nosniff
+    X-XSS-Protection: 1; mode=block
+    X-Download-Options: noopen
+    X-Robots-Tag: noindex, nofollow
+    Referrer-Policy: no-referrer
+
+ui:
+  static_use_hash: false
+  default_locale: ""
+  default_theme: simple
+  theme_args:
+    simple_style: dark
+  center_alignment: false
+  cache_url: static
+  query_in_title: false
+  infinite_scroll: false
+  search_on_category_select: true
+  hotkeys: default
+
+redis:
+  url: redis://redis:6379/0
+
+outgoing:
+  request_timeout: 3.0
+  useragent_suffix: ""
+  pool_connections: 100
+  pool_maxsize: 20
+  enable_http2: true
+
+enabled_plugins:
+  - "Basic Calculator"
+  - "Hash plugin"
+  - "Search on category select"
+  - "Tracker URL remover"
+  - "Unit converter plugin"
+
+default_category: general
+
+engines:
+  - name: duckduckgo
+    engine: duckduckgo
+    shortcut: ddg
+    timeout: 3.0
+    disabled: false
+    categories: [general, images, news, map, music, videos]
+
+  - name: startpage
+    engine: startpage
+    shortcut: sp
+    timeout: 6.0
+    disabled: false
+    categories: [general]
+
+  - name: bing
+    engine: bing
+    shortcut: bi
+    timeout: 3.0
+    disabled: false
+    categories: [general, images, news, videos]
+
+  - name: google
+    engine: google
+    use_mobile_ui: false
+    shortcut: go
+    timeout: 3.0
+    disabled: false
+    categories: [general, images, news, videos]
+
+  - name: wikipedia
+    engine: wikipedia
+    shortcut: wp
+    base_url: "https://{language}.wikipedia.org/"
+    timeout: 3.0
+    disabled: false
+    categories: [general]
+
+  - name: wikidata
+    engine: wikidata
+    shortcut: wd
+    timeout: 3.0
+    disabled: false
+    categories: [general]
+
+  - name: reddit
+    engine: reddit
+    shortcut: re
+    page_size: 25
+    timeout: 10.0
+    disabled: false
+    categories: [general, news]
+
+  - name: github
+    engine: github
+    shortcut: gh
+    timeout: 10.0
+    disabled: false
+    categories: [it]
+
+  - name: stackoverflow
+    engine: stackoverflow
+    shortcut: st
+    timeout: 10.0
+    disabled: false
+    categories: [it, qa]
+
+categories_as_tabs:
+  general:
+    - duckduckgo
+    - startpage
+    - bing
+    - google
+    - wikipedia
+    - wikidata
+    - reddit
+
+  images:
+    - duckduckgo
+    - bing
+    - google
+
+  news:
+    - duckduckgo
+    - bing
+    - reddit
+
+  it:
+    - github
+    - stackoverflow
+
+  qa:
+    - stackoverflow
