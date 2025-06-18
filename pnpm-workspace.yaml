@@ -1,4 +1,5 @@
 packages:
   - "apps/*"
   - "packages/*"
-  - "services/*"
+  # Exclude Python services from workspace to avoid pip dependency issues in Node.js build environments
+  # - "services/*"

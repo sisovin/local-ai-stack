@@ -9,7 +9,8 @@
         "dev:batch": "startup.bat",
         "dev:python": "python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload",
         "setup": "python -m venv venv && call venv\\Scripts\\activate.bat && python -m pip install --upgrade pip && pip install -r requirements.txt",
-        "install": "pip install -r requirements.txt",
+        "install": "echo \"Python dependencies managed separately - see requirements.txt\"",
+        "install:python": "pip install -r requirements.txt",
         "test": "echo \"No tests specified\" && exit 0"
     },
     "keywords": [
