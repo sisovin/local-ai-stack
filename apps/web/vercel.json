@@ -1,8 +1,7 @@
 {
-    "buildCommand": "cd ../.. && pnpm install && pnpm --filter=web build",
-    "installCommand": "pnpm install",
+    "buildCommand": "pnpm build",
+    "installCommand": "cd ../.. && pnpm install",
     "outputDirectory": ".next",
-    "rootDirectory": "apps/web",
     "framework": "nextjs",
     "functions": {
         "app/api/**/*.ts": {
@@ -12,9 +11,5 @@
     "env": {
         "NEXT_PUBLIC_SUPABASE_URL": "https://placeholder.supabase.co",
         "NEXT_PUBLIC_SUPABASE_ANON_KEY": "placeholder-key-for-build-time"
-    },
-    "ignoreCommand": "git diff --quiet HEAD^ HEAD .",
-    "regions": [
-        "iad1"
-    ]
+    }
 }
