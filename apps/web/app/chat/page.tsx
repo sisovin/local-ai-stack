@@ -8,7 +8,6 @@ import { Textarea } from "@workspace/ui/components/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select"
 import { Badge } from "@workspace/ui/components/badge"
 import { ScrollArea } from "@workspace/ui/components/scroll-area"
-import { Separator } from "@workspace/ui/components/separator"
 import { Navigation } from "@/components/navigation"
 import { NoSSR } from "@/components/NoSSR"
 import { PageWrapper } from "@/components/PageWrapper"
@@ -54,8 +53,7 @@ export default function ChatPage() {
     const models = [
         { value: 'deepseek-r1:7b', label: 'DeepSeek R1 7B', icon: Brain },
         { value: 'qwen2.5:7b', label: 'Qwen 2.5 7B', icon: Zap },
-        { value: 'deepseek-r1:14b', label: 'DeepSeek R1 14B', icon: Brain },
-        { value: 'qwen2.5:14b', label: 'Qwen 2.5 14B', icon: Zap }
+        { value: 'deepseek-r1:14b', label: 'DeepSeek R1 14B', icon: Brain }, { value: 'qwen2.5:14b', label: 'Qwen 2.5 14B', icon: Zap }
     ]
 
     useEffect(() => {
@@ -80,7 +78,7 @@ export default function ChatPage() {
 
         try {
             // Simulate API call to local backend
-            const response = await fetch('/api/chat', {
+            await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

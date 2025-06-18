@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card"
-import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import { Textarea } from "@workspace/ui/components/textarea"
@@ -17,21 +16,21 @@ import {
     Send,
     MessageSquare,
     Globe,
-    Shield,
-    Zap,
     CheckCircle,
-    ExternalLink,
     Github,
     Twitter,
     Linkedin,
-    Calendar,
     User,
-    Building,
-    AlertCircle
+    Building, AlertCircle
 } from "lucide-react"
 
+interface User {
+    id: string;
+    email?: string;
+}
+
 export default function ContactPage() {
-    const [user, setUser] = useState<any>(null)
+    const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
     const [formData, setFormData] = useState({
         name: '',
@@ -103,7 +102,7 @@ export default function ContactPage() {
                 message: '',
                 urgency: 'medium'
             })
-        } catch (error) {
+        } catch {
             setSubmitStatus('error')
         } finally {
             setIsSubmitting(false)
@@ -198,7 +197,7 @@ export default function ContactPage() {
                         </h1>
 
                         <p className="text-xl md:text-2xl text-medium-contrast max-w-3xl mx-auto leading-relaxed font-body">
-                            Ready to transform your ideas into reality? Let's start a conversation about your next project.
+                            Ready to transform your ideas into reality? Let&apos;s start a conversation about your next project.
                         </p>
                     </div>
                 </div>
@@ -218,7 +217,7 @@ export default function ContactPage() {
                                     Send Message
                                 </CardTitle>
                                 <CardDescription className="text-medium-contrast">
-                                    Fill out the form below and we'll get back to you within 24 hours.
+                                    Fill out the form below and we&apos;ll get back to you within 24 hours.
                                 </CardDescription>
                             </CardHeader>
 
@@ -329,10 +328,10 @@ export default function ContactPage() {
                                         type="submit"
                                         disabled={isSubmitting}
                                         className={`w-full btn-hover-glow font-bold text-lg py-6 rounded-lg transition-all duration-300 ${submitStatus === 'success'
-                                                ? 'bg-green-500 hover:bg-green-600'
-                                                : submitStatus === 'error'
-                                                    ? 'bg-red-500 hover:bg-red-600'
-                                                    : 'bg-neon-green hover:bg-neon-green/90 text-black'
+                                            ? 'bg-green-500 hover:bg-green-600'
+                                            : submitStatus === 'error'
+                                                ? 'bg-red-500 hover:bg-red-600'
+                                                : 'bg-neon-green hover:bg-neon-green/90 text-black'
                                             }`}
                                     >
                                         {isSubmitting ? (
@@ -377,31 +376,30 @@ export default function ContactPage() {
                             </Card>
 
                             {/* Contact Info Cards */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {contactInfo.map((info, index) => {
-                                    const IconComponent = info.icon
-                                    return (
-                                        <Card key={info.title} className="glass-card hover:glow-green transition-all duration-500">
-                                            <CardContent className="p-6">
-                                                <div className="flex items-start space-x-3">
-                                                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-r from-${info.color} to-electric-blue flex items-center justify-center flex-shrink-0`}>
-                                                        <IconComponent className="w-5 h-5 text-white" />
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="font-bold text-high-contrast mb-2 font-heading">
-                                                            {info.title}
-                                                        </h3>
-                                                        {info.details.map((detail, idx) => (
-                                                            <p key={idx} className="text-sm text-medium-contrast font-body">
-                                                                {detail}
-                                                            </p>
-                                                        ))}
-                                                    </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">                                {contactInfo.map((info) => {
+                                const IconComponent = info.icon
+                                return (
+                                    <Card key={info.title} className="glass-card hover:glow-green transition-all duration-500">
+                                        <CardContent className="p-6">
+                                            <div className="flex items-start space-x-3">
+                                                <div className={`w-10 h-10 rounded-lg bg-gradient-to-r from-${info.color} to-electric-blue flex items-center justify-center flex-shrink-0`}>
+                                                    <IconComponent className="w-5 h-5 text-white" />
                                                 </div>
-                                            </CardContent>
-                                        </Card>
-                                    )
-                                })}
+                                                <div>
+                                                    <h3 className="font-bold text-high-contrast mb-2 font-heading">
+                                                        {info.title}
+                                                    </h3>
+                                                    {info.details.map((detail, idx) => (
+                                                        <p key={idx} className="text-sm text-medium-contrast font-body">
+                                                            {detail}
+                                                        </p>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                )
+                            })}
                             </div>
 
                             {/* Social Links */}

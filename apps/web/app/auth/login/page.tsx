@@ -30,7 +30,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [user, setUser] = useState<any>(null)
+    const [user, setUser] = useState<{ id: string; email?: string } | null>(null)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
     const [authLoading, setAuthLoading] = useState(true)
@@ -323,9 +323,8 @@ export default function LoginPage() {
                                                 className="text-sm text-medium-contrast hover:text-neon-green transition-colors"
                                             >
                                                 {t.auth.forgotPassword}
-                                            </Link>
-                                            <div className="text-sm text-medium-contrast">
-                                                Don't have an account?{" "}
+                                            </Link>                                            <div className="text-sm text-medium-contrast">
+                                                Don&apos;t have an account?{" "}
                                                 <Link
                                                     href="/auth/signup"
                                                     className="text-electric-blue hover:text-electric-blue/80 transition-colors font-medium"

@@ -2,82 +2,42 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import { Button } from "@workspace/ui/components/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card"
-import { Badge } from "@workspace/ui/components/badge"
-import { Progress } from "@workspace/ui/components/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/tabs"
+import { Card, CardContent } from "@workspace/ui/components/card"
 import { Navigation } from "@/components/navigation"
-import { Authentication } from "@/components/Authentication"
 import { ChatInterface } from "@/components/ChatInterface"
-import { NoSSR } from "@/components/NoSSR"
-import ThreeBackground from "@/components/ThreeBackground"
 import Sidebar from "@/components/Sidebar"
 import MarketingHomepage from "@/components/MarketingHomepage"
 import { authService, supabase } from "@/utils/supabaseClient"
 import {
-    Terminal,
-    Cpu,
-    Zap,
-    Shield,
-    Database,
-    Globe,
-    Code,
     Brain,
     Rocket,
     Settings,
-    Activity,
-    Server,
-    MessageSquare,
-    User,
-    ChevronRight,
-    Sparkles,
-    Network,
-    Lock,
-    TrendingUp,
-    Timer,
-    Layers,
-    Play,
-    Star,
-    ArrowRight,
-    Github,
-    Twitter,
-    Linkedin,
-    Mail,
     Users,
     Clock,
     BarChart3,
-    Wand2,
     Search,
-    Monitor,
-    FileText,
-    Cog,
+    Play,
+    Activity,
     Bug,
-    Boxes
+    FileText,
+    Monitor,
+    MessageSquare
 } from "lucide-react"
 
+interface User {
+    id: string;
+    email?: string;
+}
+
 export default function HomePage() {
-    const [progress, setProgress] = useState(0)
-    const [isOnline, setIsOnline] = useState(false)
-    const [user, setUser] = useState<any>(null)
+    const [user, setUser] = useState<User | null>(null)
     const [isLoading, setIsLoading] = useState(true)
     const [showChat, setShowChat] = useState(false)
-    const [currentSlide, setCurrentSlide] = useState(0)
     const [projectsCompleted, setProjectsCompleted] = useState(0)
     const [activeUsers, setActiveUsers] = useState(0)
     const [modelsDeployed, setModelsDeployed] = useState(0)
     const [uptime, setUptime] = useState(0)
-    const [testimonialIndex, setTestimonialIndex] = useState(0)
-    const [email, setEmail] = useState("")
     const parallaxRef = useRef<HTMLDivElement>(null)
-
-    // Enhanced stats with animations
-    const stats = [
-        { label: "Projects Completed", value: projectsCompleted, target: 500, icon: Rocket },
-        { label: "Active Users", value: activeUsers, target: 1200, icon: Users },
-        { label: "Models Deployed", value: modelsDeployed, target: 48, icon: Brain },
-        { label: "Uptime", value: uptime, target: 99.9, icon: Clock, suffix: "%" }
-    ]
 
     // Hero slider content
     const heroSlides = [
@@ -187,8 +147,7 @@ export default function HomePage() {
             company: "DataFlow Solutions",
             content: "Migrating from cloud AI to this local stack saved us 70% in costs while improving response times by 3x. Game changer for our business.",
             avatar: "/avatars/placeholder-60-alt1.svg"
-        },
-        {
+        }, {
             name: "Emily Watson",
             role: "ML Engineer",
             company: "Innovation Labs",
@@ -209,16 +168,6 @@ export default function HomePage() {
             setUptime(prev => prev < 99.9 ? Math.min(prev + 0.1, 99.9) : 99.9)
         }, 50)
 
-        // Hero slider auto-advance
-        const slideInterval = setInterval(() => {
-            setCurrentSlide(prev => (prev + 1) % heroSlides.length)
-        }, 5000)
-
-        // Testimonial carousel
-        const testimonialInterval = setInterval(() => {
-            setTestimonialIndex(prev => (prev + 1) % testimonials.length)
-        }, 4000)
-
         // Parallax effect
         const handleScroll = () => {
             if (parallaxRef.current) {
@@ -230,17 +179,9 @@ export default function HomePage() {
 
         window.addEventListener('scroll', handleScroll)
 
-        // Loading simulation
-        const timer = setTimeout(() => setProgress(100), 1000)
-        const onlineTimer = setTimeout(() => setIsOnline(true), 1500)
-
         return () => {
             clearInterval(interval)
-            clearInterval(slideInterval)
-            clearInterval(testimonialInterval)
             window.removeEventListener('scroll', handleScroll)
-            clearTimeout(timer)
-            clearTimeout(onlineTimer)
         }
     }, [])
 
@@ -279,17 +220,6 @@ export default function HomePage() {
         } catch (error) {
             console.error('Sign out failed:', error)
         }
-    }
-
-    const handleChatClick = () => {
-        setShowChat(true)
-    }
-
-    const handleNewsletterSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        // Handle newsletter subscription
-        console.log('Newsletter subscription:', email)
-        setEmail("")
     }
 
     // Loading screen with enhanced animation

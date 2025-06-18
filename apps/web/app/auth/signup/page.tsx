@@ -17,7 +17,6 @@ import {
     Github,
     Chrome,
     UserPlus,
-    Shield,
     ArrowRight,
     AlertCircle,
     CheckCircle2,
@@ -32,7 +31,7 @@ export default function SignupPage() {
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [user, setUser] = useState<any>(null)
+    const [user, setUser] = useState<{ id: string; email?: string } | null>(null)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
     const [authLoading, setAuthLoading] = useState(true)

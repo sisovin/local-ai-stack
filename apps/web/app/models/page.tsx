@@ -3,39 +3,55 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/components/card'
 import { Button } from '@workspace/ui/components/button'
-import { Input } from '@workspace/ui/components/input'
-import { Textarea } from '@workspace/ui/components/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@workspace/ui/components/select'
 import { Badge } from '@workspace/ui/components/badge'
 import { Alert, AlertDescription } from '@workspace/ui/components/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@workspace/ui/components/tabs'
 import { ScrollArea } from '@workspace/ui/components/scroll-area'
 import { Navigation } from '@/components/navigation'
-import { SupabaseConnectionTest } from '@/components/SupabaseConnectionTest'
-import { DatabaseSetupHelper } from '@/components/DatabaseSetupHelper'
-import { ServiceSetupGuide } from '@/components/ServiceSetupGuide'
 import { PageWrapper } from "@/components/PageWrapper"
-import { openWebUIService } from '@/utils/supabaseClient'
 import {
-    Play,
     Settings,
     Database,
-    MessageSquare,
-    Code,
-    TestTube,
     Zap,
     Brain,
     Activity,
     RefreshCw,
     CheckCircle,
+    XCircle,
+    Download,
     AlertTriangle,
     Loader2,
     Server,
     Cpu
 } from 'lucide-react'
 
+interface Model {
+    id: string;
+    name: string;
+    size: string;
+    modified?: string;
+    details: {
+        format: string;
+        family: string;
+        parameter_size: string;
+        quantization_level: string;
+    };
+}
+
+interface HealthCheck {
+    service: string;
+    status: string;
+    data?: {
+        models?: Array<{
+            name: string;
+            size?: string;
+            modified: string;
+        }>;
+    };
+}
+
 export default function ModelsPage() {
-    const [models, setModels] = useState<any[]>([])
+    const [models, setModels] = useState<Model[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [connectionStatus, setConnectionStatus] = useState<'unknown' | 'connected' | 'error'>('unknown')

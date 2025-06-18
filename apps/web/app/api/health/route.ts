@@ -5,7 +5,7 @@ interface HealthCheck {
     status: 'healthy' | 'warning' | 'error'
     responseTime: number
     message?: string
-    data?: any
+    data?: unknown
 }
 
 // Helper function to check a service with timeout
@@ -85,18 +85,17 @@ export async function GET(request: NextRequest) {
             const searchUrl = process.env.NEXT_PUBLIC_AI_SEARCH_URL || 'http://localhost:8001'
             const searchCheck = await checkService('ai-search', `${searchUrl}/health`)
             results.push(searchCheck)
-        }
-
-        if (!service || service === 'models') {
+        } if (!service || service === 'models') {
             // Try to get models from Ollama directly
             const ollamaUrl = process.env.NEXT_PUBLIC_OLLAMA_URL || 'http://localhost:11434'
             const modelsCheck = await checkService('models', `${ollamaUrl}/api/tags`)
 
             if (modelsCheck.status === 'healthy' && modelsCheck.data) {
+                const modelsData = modelsCheck.data as { models?: Array<{ name: string; size: number; modified_at: string }> }
                 // Transform the models data for easier consumption
                 modelsCheck.data = {
-                    count: modelsCheck.data.models?.length || 0,
-                    models: modelsCheck.data.models?.map((model: any) => ({
+                    count: modelsData.models?.length || 0,
+                    models: modelsData.models?.map((model) => ({
                         name: model.name,
                         size: model.size,
                         modified: model.modified_at

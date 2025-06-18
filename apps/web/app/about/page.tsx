@@ -1,8 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card"
-import { Badge } from "@workspace/ui/components/badge"
+import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card"
 import { Button } from "@workspace/ui/components/button"
 import { Navigation } from "@/components/navigation"
 import { supabase } from "@/utils/supabaseClient"
@@ -16,28 +15,22 @@ import {
     Users,
     Code,
     Lightbulb,
-    Award,
-    Clock,
     CheckCircle,
     Star,
-    Github,
-    Twitter,
-    Linkedin,
-    Mail,
-    ExternalLink,
     ArrowRight,
     Calendar,
     TrendingUp,
-    Database,
-    Cloud,
-    Smartphone,
-    Globe,
-    Cpu,
-    Lock
+    ExternalLink,
+    Cpu
 } from "lucide-react"
 
+interface User {
+    id: string;
+    email?: string;
+}
+
 export default function AboutPage() {
-    const [user, setUser] = useState<any>(null)
+    const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
     const [activeTimelineItem, setActiveTimelineItem] = useState(0)
     const timelineRef = useRef<HTMLDivElement>(null)
@@ -181,9 +174,7 @@ export default function AboutPage() {
                 setLoading(false)
             }
         }
-        checkAuth()
-
-        // Scroll-triggered timeline animation
+        checkAuth()        // Scroll-triggered timeline animation
         const handleScroll = () => {
             if (timelineRef.current) {
                 const rect = timelineRef.current.getBoundingClientRect()
@@ -196,7 +187,7 @@ export default function AboutPage() {
 
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
+    }, [timelineEvents.length])
 
     if (loading) {
         return (
@@ -238,23 +229,22 @@ export default function AboutPage() {
                         </p>
 
                         {/* Stats Grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
-                            {stats.map((stat, index) => {
-                                const IconComponent = stat.icon
-                                return (
-                                    <Card key={stat.label} className="glass-card hover:glow-green transition-all duration-500 group cursor-pointer">
-                                        <CardContent className="p-6 text-center">
-                                            <IconComponent className="w-8 h-8 text-neon-green mx-auto mb-3 group-hover:scale-110 transition-transform" />
-                                            <div className="text-3xl md:text-4xl font-bold text-neon-green mb-2 font-heading">
-                                                {stat.value}
-                                            </div>
-                                            <div className="text-sm text-medium-contrast uppercase tracking-widest font-body">
-                                                {stat.label}
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                )
-                            })}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">                            {stats.map((stat) => {
+                            const IconComponent = stat.icon
+                            return (
+                                <Card key={stat.label} className="glass-card hover:glow-green transition-all duration-500 group cursor-pointer">
+                                    <CardContent className="p-6 text-center">
+                                        <IconComponent className="w-8 h-8 text-neon-green mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                                        <div className="text-3xl md:text-4xl font-bold text-neon-green mb-2 font-heading">
+                                            {stat.value}
+                                        </div>
+                                        <div className="text-sm text-medium-contrast uppercase tracking-widest font-body">
+                                            {stat.label}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            )
+                        })}
                         </div>
                     </div>
                 </div>
@@ -317,26 +307,25 @@ export default function AboutPage() {
                         <div className="w-24 h-1 bg-gradient-to-r from-neon-green to-electric-blue mx-auto" />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {coreValues.map((value, index) => {
-                            const IconComponent = value.icon
-                            return (
-                                <Card key={value.title} className="glass-card relative overflow-hidden group hover:glow-green transition-all duration-500">
-                                    <div className={`absolute inset-0 bg-gradient-to-br from-${value.color}/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                                    <CardContent className="p-8 text-center relative z-10">
-                                        <div className={`w-16 h-16 rounded-full bg-gradient-to-r from-${value.color} to-electric-blue flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                                            <IconComponent className="w-8 h-8 text-white" />
-                                        </div>
-                                        <h3 className="text-xl font-bold text-high-contrast mb-4 font-heading">
-                                            {value.title}
-                                        </h3>
-                                        <p className="text-medium-contrast leading-relaxed font-body">
-                                            {value.description}
-                                        </p>
-                                    </CardContent>
-                                </Card>
-                            )
-                        })}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">                        {coreValues.map((value) => {
+                        const IconComponent = value.icon
+                        return (
+                            <Card key={value.title} className="glass-card relative overflow-hidden group hover:glow-green transition-all duration-500">
+                                <div className={`absolute inset-0 bg-gradient-to-br from-${value.color}/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                                <CardContent className="p-8 text-center relative z-10">
+                                    <div className={`w-16 h-16 rounded-full bg-gradient-to-r from-${value.color} to-electric-blue flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                                        <IconComponent className="w-8 h-8 text-white" />
+                                    </div>
+                                    <h3 className="text-xl font-bold text-high-contrast mb-4 font-heading">
+                                        {value.title}
+                                    </h3>
+                                    <p className="text-medium-contrast leading-relaxed font-body">
+                                        {value.description}
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        )
+                    })}
                     </div>
                 </div>
             </section>
