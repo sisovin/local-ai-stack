@@ -5,17 +5,17 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/lib/theme/theme-context"
 import { NoSSR } from "@/components/NoSSR"
-import { Button } from "@workspace/ui/components/button"
-import { Badge } from "@workspace/ui/components/badge"
-import { Sheet, SheetContent, SheetTrigger } from "@workspace/ui/components/sheet"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
     DropdownMenuSeparator
-} from "@workspace/ui/components/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar"
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { LanguageSwitcher } from "@/components/LanguageSwitcher"
 import { ThemeSwitcher } from "@/components/ThemeSwitcher"
 import {

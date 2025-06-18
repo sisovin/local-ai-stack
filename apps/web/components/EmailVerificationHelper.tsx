@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from 'react'
-import { Button } from '@workspace/ui/components/button'
-import { Input } from '@workspace/ui/components/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/components/card'
-import { Alert, AlertDescription } from '@workspace/ui/components/alert'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { authService } from '@/utils/supabaseClient'
 import { Mail, RefreshCw, AlertCircle, CheckCircle, Settings } from 'lucide-react'
 

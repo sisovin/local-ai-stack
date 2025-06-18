@@ -2,8 +2,8 @@
 
 import { Navigation } from "@/components/navigation"
 import { WebSearchInterface } from "@/components/WebSearchInterface"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card"
-import { Badge } from "@workspace/ui/components/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { PageWrapper } from "@/components/PageWrapper"
 import {
     Search,

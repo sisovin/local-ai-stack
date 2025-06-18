@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card"
-import { Button } from "@workspace/ui/components/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { Navigation } from "@/components/navigation"
 import { supabase } from "@/utils/supabaseClient"
 import { useT } from "@/lib/i18n"

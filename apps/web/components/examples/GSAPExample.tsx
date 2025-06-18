@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useEffect } from 'react'
-import { Card, CardContent } from '@workspace/ui/components/card'
-import { Button } from '@workspace/ui/components/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { useGSAPAnimation, animationUtils, animations } from '@/lib/animations/gsap-utils'
 
 export function GSAPExample() {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import { Card, CardContent } from "@workspace/ui/components/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Navigation } from "@/components/navigation"
 import { ChatInterface } from "@/components/ChatInterface"
 import Sidebar from "@/components/Sidebar"

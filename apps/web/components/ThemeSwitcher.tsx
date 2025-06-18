@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@/components/ui/button"
 import { Moon, Sun, Monitor, Palette } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
@@ -10,7 +10,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
     DropdownMenuSeparator,
-} from "@workspace/ui/components/dropdown-menu"
+} from "@/components/ui/dropdown-menu"
 import { useTheme } from "@/lib/theme/theme-context"
 
 export function ThemeSwitcher() {

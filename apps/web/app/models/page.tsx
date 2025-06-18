@@ -1,12 +1,12 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@workspace/ui/components/card'
-import { Button } from '@workspace/ui/components/button'
-import { Badge } from '@workspace/ui/components/badge'
-import { Alert, AlertDescription } from '@workspace/ui/components/alert'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@workspace/ui/components/tabs'
-import { ScrollArea } from '@workspace/ui/components/scroll-area'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Navigation } from '@/components/navigation'
 import { PageWrapper } from "@/components/PageWrapper"
 import {

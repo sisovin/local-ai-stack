@@ -1,12 +1,12 @@
 "use client"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@workspace/ui/components/dropdown-menu"
+} from "@/components/ui/dropdown-menu"
 import { Languages, Check } from "lucide-react"
 import { useTranslation, getAvailableLanguages, getLanguageInfo, type SupportedLanguage } from "@/lib/i18n"
 
