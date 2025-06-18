@@ -2,9 +2,7 @@
 const nextConfig = {
   transpilePackages: ["@workspace/ui"],
   output: 'standalone',
-  experimental: {
-    outputFileTracingRoot: "../../",
-  },
+  outputFileTracingRoot: "../../",
 }
 
 export default nextConfig
