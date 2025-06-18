@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@workspace/ui/components/slider'
 import { Separator } from '@workspace/ui/components/separator'
 import { Alert, AlertDescription } from '@workspace/ui/components/alert'
-import { authService, chatService, openWebUIService, ChatMessage } from '@/utils/supabaseClient'
+import { authService, chatService, openWebUIService, ChatMessage, supabase } from '@/utils/supabaseClient'
 import { NoSSR } from '@/components/NoSSR'
 import {
     Send,
@@ -76,9 +76,22 @@ export function ChatInterface({ onSignOut }: ChatInterfaceProps) {
         try {
             setError(null)
 
-            // Get current user
-            const currentUser = await authService.getCurrentUser()
-            setUser(currentUser)
+            // Get current user using robust auth checking
+            const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+
+            if (sessionError) {
+                console.warn('Session check failed:', sessionError)
+                setUser(null)
+                return
+            }
+
+            let currentUser = null
+            if (session?.user) {
+                currentUser = session.user
+                setUser(currentUser)
+            } else {
+                setUser(null)
+            }
 
             // Only proceed with chat history if user is authenticated
             if (currentUser) {

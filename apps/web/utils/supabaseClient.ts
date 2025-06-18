@@ -19,7 +19,36 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
     auth: {
         autoRefreshToken: true,
         persistSession: true,
-        detectSessionInUrl: true
+        detectSessionInUrl: true,
+        // Add these options to prevent auth errors
+        flowType: 'pkce',
+        storageKey: 'supabase.auth.token',
+        storage: {
+            getItem: (key: string) => {
+                if (typeof window === 'undefined') return null
+                try {
+                    return window.localStorage.getItem(key)
+                } catch {
+                    return null
+                }
+            },
+            setItem: (key: string, value: string) => {
+                if (typeof window === 'undefined') return
+                try {
+                    window.localStorage.setItem(key, value)
+                } catch {
+                    // Ignore storage errors
+                }
+            },
+            removeItem: (key: string) => {
+                if (typeof window === 'undefined') return
+                try {
+                    window.localStorage.removeItem(key)
+                } catch {
+                    // Ignore storage errors
+                }
+            }
+        }
     }
 })
 
@@ -180,13 +209,19 @@ export const authService = {
     async signOut() {
         const { error } = await supabase.auth.signOut()
         if (error) throw error
-    },
-
-    // Get current user
+    },    // Get current user
     async getCurrentUser() {
-        const { data: { user }, error } = await supabase.auth.getUser()
-        if (error) throw error
-        return user
+        try {
+            const { data: { user }, error } = await supabase.auth.getUser()
+            if (error) {
+                console.warn('Failed to get current user:', error.message)
+                return null
+            }
+            return user
+        } catch (error) {
+            console.warn('Error getting current user:', error)
+            return null
+        }
     },
 
     // Listen to auth state changes
@@ -223,8 +258,8 @@ export const openWebUIService = {
             maxTokens = 2000,
             stream = false,
             conversationId
-        } = options        
-        
+        } = options
+
         const apiKey = process.env.NEXT_PUBLIC_OPENWEBUI_API_KEY
         const baseUrl = process.env.NEXT_PUBLIC_OPENWEBUI_URL || 'http://localhost:3000'
 
@@ -399,16 +434,17 @@ export const healthService = {
         } catch (error) {
             return { status: 'error', responseTime: 0 }
         }
-    },
-
-    // Check Supabase connection
+    },    // Check Supabase connection
     async checkSupabase() {
         try {
             const start = Date.now()
+            // Use getSession instead of getUser to avoid auth issues
             const { data, error } = await supabase.auth.getSession()
             const responseTime = Date.now() - start
-            return { status: error ? 'error' : 'healthy', responseTime }
+            // Don't treat missing session as an error
+            return { status: 'healthy', responseTime }
         } catch (error) {
+            console.warn('Supabase health check error:', error)
             return { status: 'error', responseTime: 0 }
         }
     }

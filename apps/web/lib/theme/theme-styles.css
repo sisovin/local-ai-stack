@@ -1,0 +1,288 @@
+/* Enhanced theme variables and transitions */
+:root {
+    /* Base Colors - Cyberpunk Dark Theme */
+    --background: oklch(0.05 0.01 220);
+    --foreground: oklch(0.98 0.01 180);
+    --muted: oklch(0.12 0.02 220);
+    --muted-foreground: oklch(0.85 0.02 180);
+    --popover: oklch(0.08 0.02 220);
+    --popover-foreground: oklch(0.98 0.01 180);
+    --card: oklch(0.08 0.02 220);
+    --card-foreground: oklch(0.98 0.01 180);
+    --border: oklch(0.15 0.02 220);
+    --input: oklch(0.15 0.02 220);
+    --primary: oklch(0.85 0.30 145);
+    --primary-foreground: oklch(0.05 0.01 220);
+    --secondary: oklch(0.75 0.25 220);
+    --secondary-foreground: oklch(0.98 0.01 180);
+    --accent: oklch(0.70 0.25 280);
+    --accent-foreground: oklch(0.98 0.01 180);
+    --destructive: oklch(0.65 0.25 15);
+    --destructive-foreground: oklch(0.98 0.01 180);
+    --ring: oklch(0.85 0.30 145);
+    --radius: 0.75rem;
+
+    /* Custom Cyberpunk Colors */
+    --neon-green: oklch(0.85 0.30 145);
+    --electric-blue: oklch(0.75 0.25 220);
+    --cyber-purple: oklch(0.70 0.25 280);
+    --tech-gray: oklch(0.35 0.02 220);
+    --glow-green: oklch(0.90 0.35 145);
+    --surface-glass: oklch(0.12 0.02 220 / 0.85);
+    --text-high-contrast: oklch(0.98 0.01 180);
+    --text-medium-contrast: oklch(0.85 0.02 180);
+    --text-accent: oklch(0.85 0.30 145);
+    --shimmer: oklch(0.90 0.35 145);
+
+    /* Theme transition properties */
+    --theme-transition-duration: 0.3s;
+    --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Light theme overrides */
+[data-theme="light"] {
+    --background: oklch(0.98 0.01 180);
+    --foreground: oklch(0.05 0.01 220);
+    --muted: oklch(0.95 0.01 180);
+    --muted-foreground: oklch(0.45 0.02 220);
+    --popover: oklch(0.98 0.01 180);
+    --popover-foreground: oklch(0.05 0.01 220);
+    --card: oklch(0.98 0.01 180);
+    --card-foreground: oklch(0.05 0.01 220);
+    --border: oklch(0.90 0.01 180);
+    --input: oklch(0.92 0.01 180);
+    --primary: oklch(0.25 0.30 145);
+    --primary-foreground: oklch(0.98 0.01 180);
+    --secondary: oklch(0.92 0.01 180);
+    --secondary-foreground: oklch(0.05 0.01 220);
+    --accent: oklch(0.92 0.01 180);
+    --accent-foreground: oklch(0.05 0.01 220);
+    --destructive: oklch(0.60 0.25 15);
+    --destructive-foreground: oklch(0.98 0.01 180);
+    --ring: oklch(0.25 0.30 145);
+
+    /* Light theme cyberpunk colors - softer but still vibrant */
+    --neon-green: oklch(0.45 0.25 145);
+    --electric-blue: oklch(0.35 0.20 220);
+    --cyber-purple: oklch(0.40 0.20 280);
+    --tech-gray: oklch(0.65 0.02 220);
+    --glow-green: oklch(0.50 0.30 145);
+    --surface-glass: oklch(0.95 0.01 180 / 0.85);
+    --text-high-contrast: oklch(0.05 0.01 220);
+    --text-medium-contrast: oklch(0.35 0.02 220);
+    --text-accent: oklch(0.45 0.25 145);
+    --shimmer: oklch(0.50 0.30 145);
+}
+
+/* Smooth transitions for all theme-dependent properties */
+* {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-duration: var(--theme-transition-duration);
+    transition-timing-function: var(--theme-transition-timing);
+}
+
+/* Disable transitions during theme switching to prevent flashing */
+.theme-transitioning * {
+    transition: none !important;
+}
+
+/* Enhanced glass morphism effects */
+.glass-card {
+    background: linear-gradient(135deg,
+            hsl(var(--card) / 0.8) 0%,
+            hsl(var(--card) / 0.4) 100%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    backdrop-filter: blur(20px) saturate(200%);
+    border: 1px solid hsl(var(--border) / 0.3);
+    box-shadow:
+        0 8px 32px hsl(var(--foreground) / 0.1),
+        inset 0 1px 0 hsl(var(--foreground) / 0.1);
+}
+
+.glass-card:hover {
+    border-color: hsl(var(--neon-green) / 0.5);
+    box-shadow:
+        0 12px 40px hsl(var(--foreground) / 0.15),
+        0 0 20px hsl(var(--neon-green) / 0.3),
+        inset 0 1px 0 hsl(var(--foreground) / 0.1);
+}
+
+/* Enhanced button hover effects */
+.btn-hover-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-hover-glow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            hsl(var(--neon-green) / 0.3),
+            transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-hover-glow:hover::before {
+    left: 100%;
+}
+
+/* Neon glow effects */
+.glow-green {
+    box-shadow:
+        0 0 20px hsl(var(--neon-green) / 0.5),
+        0 0 40px hsl(var(--neon-green) / 0.3),
+        0 0 60px hsl(var(--neon-green) / 0.1);
+}
+
+.glow-blue {
+    box-shadow:
+        0 0 20px hsl(var(--electric-blue) / 0.5),
+        0 0 40px hsl(var(--electric-blue) / 0.3),
+        0 0 60px hsl(var(--electric-blue) / 0.1);
+}
+
+.glow-purple {
+    box-shadow:
+        0 0 20px hsl(var(--cyber-purple) / 0.5),
+        0 0 40px hsl(var(--cyber-purple) / 0.3),
+        0 0 60px hsl(var(--cyber-purple) / 0.1);
+}
+
+/* Text selection styling */
+::selection {
+    background: hsl(var(--neon-green) / 0.3);
+    color: hsl(var(--text-high-contrast));
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom,
+            hsl(var(--neon-green)),
+            hsl(var(--electric-blue)));
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom,
+            hsl(var(--glow-green)),
+            hsl(var(--neon-green)));
+}
+
+/* Enhanced animations */
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px hsl(var(--neon-green) / 0.3);
+        transform: scale(1);
+    }
+
+    50% {
+        box-shadow: 0 0 40px hsl(var(--neon-green) / 0.6);
+        transform: scale(1.05);
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 300% 0;
+    }
+
+    100% {
+        background-position: -300% 0;
+    }
+}
+
+@keyframes holographic {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes particle-float {
+
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 0.8;
+    }
+}
+
+@keyframes theme-transition {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+    outline: 2px solid hsl(var(--neon-green));
+    outline-offset: 2px;
+    border-radius: var(--radius);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast support */
+@media (prefers-contrast: high) {
+    :root {
+        --text-high-contrast: oklch(1 0 0);
+        --text-medium-contrast: oklch(0.9 0 0);
+        --border: oklch(0.3 0 0);
+    }
+
+    [data-theme="light"] {
+        --text-high-contrast: oklch(0 0 0);
+        --text-medium-contrast: oklch(0.1 0 0);
+        --border: oklch(0.7 0 0);
+    }
+}

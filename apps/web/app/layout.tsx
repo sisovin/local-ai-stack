@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { Metadata } from "next"
 
 import "@workspace/ui/globals.css"
+import "@/lib/theme/theme-styles.css"
 import { Providers } from "@/components/providers"
 
 const fontSans = Geist({
@@ -16,14 +17,15 @@ const fontMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Local AI Stack - Futuristic AI Infrastructure",
-  description: "A complete local AI infrastructure with DeepSeek R1, Qwen 3, and advanced backend services",
-  keywords: ["AI", "Local LLM", "DeepSeek", "Qwen", "FastAPI", "Ollama"],
+  description: "A complete local AI infrastructure with DeepSeek R1, Qwen 3, and advanced backend services featuring cutting-edge cyberpunk design and real-time monitoring",
+  keywords: ["AI", "Local LLM", "DeepSeek", "Qwen", "FastAPI", "Ollama", "Cyberpunk", "Futuristic UI", "Three.js"],
   authors: [{ name: "Local AI Stack Team" }],
   openGraph: {
-    title: "Local AI Stack",
-    description: "Futuristic AI Infrastructure for Local Development",
+    title: "Local AI Stack - Futuristic AI Infrastructure",
+    description: "Next-generation AI Infrastructure with Cyberpunk Design",
     type: "website",
   },
+  robots: "index, follow",
 }
 
 export default function RootLayout({
