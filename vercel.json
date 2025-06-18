@@ -1,12 +1,11 @@
 {
-  "buildCommand": "cd apps/web && pnpm build",
-  "installCommand": "pnpm install --filter=web --filter=@workspace/ui --filter=@workspace/eslint-config --filter=@workspace/typescript-config",
-  "outputDirectory": "apps/web/.next",
-  "cwd": ".",
-  "framework": "nextjs",
-  "functions": {
-    "apps/web/app/api/**/*.ts": {
-      "runtime": "nodejs20.x"
+    "buildCommand": "cd apps/web && pnpm build",
+    "installCommand": "pnpm install --filter=web --filter=@workspace/ui --filter=@workspace/eslint-config --filter=@workspace/typescript-config",
+    "outputDirectory": "apps/web/.next",
+    "framework": "nextjs",
+    "functions": {
+        "apps/web/app/api/**/*.ts": {
+            "runtime": "nodejs20.x"
+        }
     }
-  }
 }
