@@ -3,19 +3,27 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-if (!supabaseUrl) {
-    throw new Error('Missing env.NEXT_PUBLIC_SUPABASE_URL - Please check your .env.local file')
+// During build time or when environment variables are missing, use fallback values
+const isBuildTime = process.env.NODE_ENV === 'production' && !supabaseUrl
+const fallbackUrl = 'https://placeholder.supabase.co'
+const fallbackKey = 'placeholder-key'
+
+const finalUrl = supabaseUrl || fallbackUrl
+const finalKey = supabaseKey || fallbackKey
+
+if (!isBuildTime) {
+    if (!supabaseUrl) {
+        throw new Error('Missing env.NEXT_PUBLIC_SUPABASE_URL - Please check your .env.local file')
+    }
+
+    if (!supabaseKey || supabaseKey === 'your-anon-key-here') {
+        throw new Error('Missing or invalid env.NEXT_PUBLIC_SUPABASE_ANON_KEY - Please add your actual Supabase anon key to .env.local')
+    } console.log('🔧 Supabase Configuration:')
+    console.log('URL:', supabaseUrl)
+    console.log('Key (first 20 chars):', supabaseKey.substring(0, 20) + '...')
 }
 
-if (!supabaseKey || supabaseKey === 'your-anon-key-here') {
-    throw new Error('Missing or invalid env.NEXT_PUBLIC_SUPABASE_ANON_KEY - Please add your actual Supabase anon key to .env.local')
-}
-
-console.log('🔧 Supabase Configuration:')
-console.log('URL:', supabaseUrl)
-console.log('Key (first 20 chars):', supabaseKey.substring(0, 20) + '...')
-
-export const supabase = createClient(supabaseUrl, supabaseKey, {
+export const supabase = createClient(finalUrl, finalKey, {
     auth: {
         autoRefreshToken: true,
         persistSession: true,
